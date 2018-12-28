@@ -1,5 +1,9 @@
 package com.yourcompany.Tests;
 
+import java.util.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 import com.saucelabs.common.SauceOnDemandAuthentication;
 
 import org.junit.*;
@@ -91,10 +95,10 @@ public class TestBase implements SauceOnDemandSessionIdProvider {
     public static LinkedList browsersStrings() {
         LinkedList browsers = new LinkedList();
 
-        browsers.add(new String[]{"Windows 10", "14.14393", "MicrosoftEdge", null, null});
-        browsers.add(new String[]{"Windows 10", "49.0", "firefox", null, null});
-        browsers.add(new String[]{"Windows 7", "11.0", "internet explorer", null, null});
-        browsers.add(new String[]{"OS X 10.11", "10.0", "safari", null, null});
+        browsers.add(new String[]{"Windows 10", "16.16299", "MicrosoftEdge", null, null});
+        browsers.add(new String[]{"Windows 10", "64.0", "firefox", null, null});
+        browsers.add(new String[]{"Windows 10", "11.0", "internet explorer", null, null});
+        browsers.add(new String[]{"OS X 10.14", "12.0", "safari", null, null});
         browsers.add(new String[]{"OS X 10.10", "54.0", "chrome", null, null});
         return browsers;
     }
@@ -106,6 +110,12 @@ public class TestBase implements SauceOnDemandSessionIdProvider {
      *
      * @throws Exception if an error occurs during the creation of the {@link RemoteWebDriver} instance.
      */
+
+//Creates a timestamp to use for build number
+    SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmm");
+    String ts = f.format(new Date());
+
+
     @Before
     public void setUp() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -114,7 +124,10 @@ public class TestBase implements SauceOnDemandSessionIdProvider {
         capabilities.setCapability(CapabilityType.VERSION, version);
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("device-orientation", deviceOrientation);
+        capabilities.setCapability("trustAllSSLCertificates", true);
         capabilities.setCapability(CapabilityType.PLATFORM, os);
+        capabilities.setCapability("avoidProxy", true);
+        capabilities.setCapability("build", ts);
 
         String methodName = name.getMethodName();
         capabilities.setCapability("name", methodName);

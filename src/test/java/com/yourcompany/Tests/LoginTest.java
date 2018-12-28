@@ -3,12 +3,14 @@ package com.yourcompany.Tests;
 import com.yourcompany.Pages.*;
 import org.junit.Test;
 import org.openqa.selenium.InvalidElementStateException;
+import java.util.concurrent.TimeUnit;
+
 
 import static org.junit.Assert.*;
 
-public class FollowLinkTest extends TestBase {
+public class LoginTest extends TestBase {
 
-    public FollowLinkTest(String os,
+    public LoginTest(String os,
                           String version, String browser, String deviceName, String deviceOrientation) {
             super(os, version, browser, deviceName, deviceOrientation);
     }
@@ -18,11 +20,17 @@ public class FollowLinkTest extends TestBase {
      * @throws InvalidElementStateException
      */
     @Test
-    public void verifyLinkTest() throws InvalidElementStateException {
-        GuineaPigPage page = GuineaPigPage.visitPage(driver);
+    public void LoginTest() throws InvalidElementStateException {
+        SauceDemoPage page = SauceDemoPage.visitPage(driver);
+        page.inputUsername("standard_user");
+        page.inputPassword("secret_sauce");
+
+        page.clickSubmit();
+
+        page.openMenu();
 
         page.followLink();
 
-        assertFalse(page.isOnPage());
+        assertTrue(page.isOnPage());
     }
 }
